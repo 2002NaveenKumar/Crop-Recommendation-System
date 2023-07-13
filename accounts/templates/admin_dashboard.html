@@ -1,0 +1,89 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active" onclick="showUsers(this)">Users</a>
+          <a href="#" class="list-group-item list-group-item-action" onclick="generateTestReport(this)">Generate Test Report</a>
+          <a href="#" class="list-group-item list-group-item-action" onclick="showTestReport(this)">Test Reports</a>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div id="userSection">
+          <div class="card mb-4">
+            <div class="card-header">User Profile</div>
+            <div class="card-body">
+                <table id="showAllUser" class="display" width="100%"></table>
+            </div>
+          </div>
+        </div>
+
+        <div id="generateTestReport" style="display: none;">
+          <div class="card">
+            <div class="card-header">Test Report</div>
+            <div class="card-body">
+                <form id="testReportForm">
+                    {% csrf_token %}
+                    <div class="row">
+                    <div class="alert generate_success_alert" style="display:none" role="alert">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                      <label for="nitrogen" class="form-label">Nitrogen</label>
+                      <input type="text" class="form-control" name="nitrogen" id="nitrogen" placeholder="Enter Nitrogen Value">
+                    </div>
+                    <div class="col-sm-3 form-group mb-3">
+                      <label for="phosphorus" class="form-label">Phosphorus</label>
+                      <input type="text" class="form-control" name="phosphorus" id="phosphorus" placeholder="Enter Phosphorus Value">
+                    </div>
+                    <div class="col-sm-3 form-group mb-3">
+                        <label for="potassium" class="form-label">Potassium</label>
+                        <input type="text" class="form-control" name="potassium" id="potassium" placeholder="Enter Potassium Value">
+                    </div>
+                    <div class="col-sm-3 form-group mb-3">
+                        <label for="temperature" class="form-label">Temperature</label>
+                        <input type="text" class="form-control" name="temperature" id="temperature" placeholder="Enter Temperature Value">
+                    </div>
+                    <div class="col-sm-3 form-group mb-3">
+                        <label for="humidity" class="form-label">Humidity</label>
+                        <input type="text" class="form-control" name="humidity" id="humidity" placeholder="Enter Humidity Value">
+                    </div>
+                    <div class="col-sm-3 form-group mb-3">
+                        <label for="ph" class="form-label">PH</label>
+                        <input type="text" class="form-control" name="ph" id="ph" placeholder="Enter PH Value">
+                    </div>
+                    <div class="col-sm-3 form-group mb-3">
+                        <label for="rainfall" class="form-label">Rainfall</label>
+                        <input type="text" class="form-control" name="rainfall" id="rainfall" placeholder="Enter Rainfall Value">
+                    </div>
+                    <div class="col-sm-4 form-group mb-3">
+                    <div class="form-group mb-3">
+                        <select name="user_id" id="selectElement" class="form-select" aria-label="select userID">
+                        </select>
+                    </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group mb-3">
+                    <button type="submit" class="btn btn-lg btn-primary generateReport">Generate Report</button>
+                        </div>
+                        </div>
+                </form>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div id="showreports" style="display: none;"> 
+            <div class="card">
+              <div class="card-header">Test Reports</div>
+              <div class="card-body">
+                <table id="showAllReports" class="display" width="100%"></table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

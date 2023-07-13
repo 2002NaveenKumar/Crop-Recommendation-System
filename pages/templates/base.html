@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture Testing Lab</title>
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" width="50" height="50">
+                Agriculture Testing Lab</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    {% elif user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'user_dashboard' %}">User Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link login-btn" id="loginBtn" href="#" data-bs-toggle="modal"
+                            data-bs-target="#signInModal">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link login-btn" href="#" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign
+                            up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block content %}
+
+    {% endblock %}
+    <!-- Footer Section -->
+    <footer>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span>Copyright ©
+                            <script>document.write(/\d{4}/.exec(Date())[0])</script>, All Right Reserved
+                        </span>
+                    </div>
+                </div>
+                <!-- End Row -->
+            </div>
+            <!-- End Copyright Container -->
+        </div>
+    </footer>
+    <!-- Modal for Sign In -->
+    <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Sign In Form -->
+                    <p class="success-message" style="display:none"></p>
+                    <p class="error-message" style="display:none"></p>
+                    <form id="loginForm">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password"
+                                placeholder="Enter your password">
+                        </div>
+                        <div class="account-type">
+                            <input type="radio" name="account_type" value="user" checked>
+                            <label for="user">User</label>
+                            <input type="radio" name="account_type" value="admin">
+                            <label for="admin">Admin</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Sign Up -->
+    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Sign Up Form -->
+                    <form id="signupForm">
+                        <p class="success-signup-message" style="display:none"></p>
+                        <p class="error-signup-message" style="display:none"></p>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Enter your First name">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your Last name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter your Email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password"
+                                placeholder="Enter your password">
+                        </div>
+                        <div class="account-type">
+                            <input type="radio" name="account_type" id="signup-user" value="user" checked>
+                            <label for="signup-user">User</label>
+                            <input type="radio" name="account_type" id="signup-admin" value="admin">
+                            <label for="signup-admin">Admin</label>
+                        </div>
+                        <button type="submit" id="signup" class="btn btn-primary">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+
+<script>
+    // Activate Bootstrap Carousel
+    var sliderCarousel = document.querySelector('#slider-carousel');
+    var slider = new bootstrap.Carousel(sliderCarousel, {
+        interval: 2000,
+        pause: true,
+        wrap: true
+    });
+    $(document).ready(function (e) {
+        // AJAX request for login
+        $(document).on('submit', '#loginForm', function (e) {
+            e.preventDefault();  // Prevent form submission
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: "user/login/",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    console.log(response)
+                    $('.success-message').text(response.message).css({ 'font-size': '16px', 'color': 'green', 'font-weight': 'bold', 'text-align': 'center' }).show();
+                    setTimeout(() => {
+                        $('.success-message').hide()
+                        window.location.href = response.redirectUrl;
+                    }, 2000);
+                },
+                error: function (xhr, status, error) {
+                    $('.error-message').text("Invalid Credentials").css({ 'font-size': '16px', 'color': 'red', 'font-weight': 'bold', 'text-align': 'center' }).show();
+                    setTimeout(() => {
+                        $('.error-message').hide()
+                    }, 2000);
+                }
+            });
+        });
+        // AJAX request for signup
+        $(document).on('click', '#signup', function (e) {
+            e.preventDefault();  // Prevent form submission
+            var formData = $("#signupForm").serialize();
+
+            $.ajax({
+                url: "user/signup/",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    console.log(response)
+                    $('.success-signup-message').text(response.message).css({ 'font-size': '16px', 'color': 'green', 'font-weight': 'bold', 'text-align': 'center' }).show();
+                    setTimeout(() => {
+                        $('.success-signup-message').hide()
+                        window.location.href = response.redirectUrl;
+                    }, 2000);
+                },
+                error: function (xhr, status, error) {
+                    $('.error-signup-message').text("Invalid Credentials").css({ 'font-size': '16px', 'color': 'red', 'font-weight': 'bold', 'text-align': 'center' }).show();
+                    setTimeout(() => {
+                        $('.error-signup-message').hide()
+                    }, 2000);
+                }
+            });
+        });
+    });
+</script>
+
+</html>
